@@ -1,73 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pricing Component</title>
-    <link rel="stylesheet" href="style.css"> <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div style="background-image: url(./images/bg-pattern.svg); height: 50vh">
+      <div style="">
+        <div
+          style="
+            background: url(./images/pattern-circles.svg) no-repeat center
+              center;
+            height: 15vh;
+          "
+        >
+          <h2>Simple, traffic-based pricing</h2>
+          <p>Sign-up for our 30-day trial. No credit card required.</p>
+        </div>
 
-
-  
-      
-</head>
-<body>
-    <div style="background-image: url(./images/bg-pattern.svg); height: 50vh;">
-    <div style="position: absolute; top: 10%; left: 40%; ">
-
-        <div style="background: url(./images/pattern-circles.svg) no-repeat center center;  height: 15vh;">
-        <h2>Simple, traffic-based pricing</h2>
-        <p>Sign-up for our 30-day trial. No credit card required.</p>
-
-    </div>
-        
         <div class="pricing-card pricing-container">
-
-            <div class="pricingDetail">
+          <div class="pricingDetail">
             <p class="pageviews">100K PAGEVIEWS</p>
-            <span class="price">$16.00 </span><span style="margin: auto 0;">/ month</span>
+            <span class="price">$16.00 </span
+            ><span style="margin: auto 0">/ month</span>
+          </div>
 
-        </div>
-            
-            <div class="slider-container">
-                <input type="range" min="0" max="100" value="50" class="custom-slider" id="slider">
+          <div class="slider-container">
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="50"
+              step="25"
+              class="custom-slider"
+              id="slider"
+            />
+          </div>
 
-
+          <div class="billing-toggle">
+            <div>
+              <span>Monthly Billing</span>
+              <label class="switch">
+                <input type="checkbox" checked />
+                <span class="slider round"></span>
+              </label>
             </div>
-            
-            <div class="billing-toggle">
-                <div>
-                <span>Monthly Billing</span>
-                <label class="switch">
-                    <input type="checkbox" checked>
-                    <span class="slider round"></span>
-                </label>
-            </div>
-                <span>Yearly Billing <span class="discount">25% discount</span></span>
-            </div>
-            <div class="list">
+            <span
+              >Yearly Billing <span class="discount">25% discount</span></span
+            >
+          </div>
+          <div class="list">
             <ul class="features">
-                <li><img src="./images/icon-check.svg"/> Unlimited websites</li>
-                <li><img src="./images/icon-check.svg"/> 100% data ownership</li>
-                <li><img src="./images/icon-check.svg"/> Email reports</li>
+              <li><img src="./images/icon-check.svg" /> Unlimited websites</li>
+              <li><img src="./images/icon-check.svg" /> 100% data ownership</li>
+              <li><img src="./images/icon-check.svg" /> Email reports</li>
             </ul>
-            
-            <button class="trial-btn">Start my trial</button>
-        </div>
-        </div>
-    </div>
-</div>
 
-    <div class="attribution" style="position: fixed; bottom: 0; left: 40%;">
-        Challenge by <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>. 
-        Coded by <a target="_blank" href="https://www.linkedin.com/in/khanshahnwaz/">Shahnwaz Khan</a>.
+            <button class="trial-btn">Start my trial</button>
+          </div>
+        </div>
       </div>
+    </div>
+
+    <div class="attribution" style="position: fixed; bottom: 0; left: 40%">
+      Challenge by
+      <a href="https://www.frontendmentor.io?ref=challenge" target="_blank"
+        >Frontend Mentor</a
+      >. Coded by
+      <a target="_blank" href="https://www.linkedin.com/in/khanshahnwaz/"
+        >Shahnwaz Khan</a
+      >.
+    </div>
 
     <script>
-        const slider = document.getElementById('slider');
-        slider.addEventListener('input', function () {
-          const value = this.value;
-          this.style.background = `linear-gradient(to right, #00d1b2 ${value}%, #ddd ${value}%)`;
-        });
-      </script>
-</body>
+      const slider = document.getElementById("slider");
+      slider.addEventListener("input", function () {
+        const value = this.value;
+        this.style.background = `linear-gradient(to right, #00d1b2 ${value}%, #ddd ${value}%)`;
+      });
+    </script>
+
+    <script>
+      // const slider = document.getElementById('slider');
+      const pageviewsText = document.querySelector(".pageviews");
+      const priceText = document.querySelector(".price");
+      const billingToggle = document.querySelector(".switch input");
+
+      const pricingData = [
+        { views: "10K", price: 8 },
+        { views: "50K", price: 12 },
+        { views: "100K", price: 16 },
+        { views: "500K", price: 24 },
+        { views: "1M", price: 36 },
+      ];
+
+      function updateSliderBackground(value) {
+        slider.style.background = `linear-gradient(to right, #00d1b2 ${value}%, #ddd ${value}%)`;
+      }
+
+      function updatePricing() {
+        const value = parseInt(slider.value);
+        let index = 0;
+
+        if (value <= 10) index = 0;
+        else if (value <= 30) index = 1;
+        else if (value <= 60) index = 2;
+        else if (value <= 85) index = 3;
+        else index = 4;
+
+        const yearly = billingToggle.checked;
+        let price = pricingData[index].price;
+        if (yearly) price = (price * 0.75).toFixed(2);
+
+        pageviewsText.textContent = `${pricingData[index].views} PAGEVIEWS`;
+        priceText.textContent = `$${price}`;
+        updateSliderBackground(value);
+      }
+
+      // Initialize on page load
+      updatePricing();
+
+      // Event listeners
+      slider.addEventListener("input", updatePricing);
+      billingToggle.addEventListener("change", updatePricing);
+    </script>
+  </body>
 </html>
